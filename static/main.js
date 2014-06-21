@@ -44,12 +44,55 @@ connectLines = function (draw, shape_a, shape_b) {
     return draw.line(cx, cy, cx1, cy1);
 };
 
+
 initGraph = function () {
-    var draw = SVG('drawing').size(800, 800);
+    var X = 900,
+        Y = 900;
+    var draw = SVG('drawing').size(X, Y);
 
-    var rect = draw.rect(100, 100).attr({ fill: '#f06' });
-    var rect2 = draw.rect(100, 100).attr({ fill: '#f15' }).move(150, 0);
+//    var rect = draw.rect(100, 100).attr({ fill: '#f06' });
+//    var rect2 = draw.rect(100, 100).attr({ fill: '#f15' }).move(150, 0);
 
-    var line = connectLines(draw, rect, rect2);
-    line.stroke({ width: 1 });
+    // var line = connectLines(draw, rect, rect2);
+    // line.stroke({ width: 1 });
+
+    var test_data = makeTestData(X, Y, 8);
+
+    var sizes = test_data[0],
+        data = test_data[1];
+
+
+    for (i = 0; i < data.length; i++) {
+        var point = data[i];
+        console.log(point);
+        var r = draw.rect(sizes, sizes)
+            .attr({ fill: '#f15' })
+            .move(point[0], point[1]);
+    }
+};
+
+var increaseValue = function (current, increase, max) {
+    return (current > max) ? 0 : current + increase;
+};
+
+var makeTestData = function (max_x, max_y, num_items) {
+    var items_per_axis = Math.sqrt(num_items);
+    var rec_size = max_x / items_per_axis;
+
+    var items = [];
+
+    var current_x = 0,
+        current_y = 0;
+
+    for (i = 0; i < items_per_axis; i++) {
+        for (j = 0; j < items_per_axis; j++) {
+            items.push([current_x, current_y]);
+            current_y = increaseValue(current_y, rec_size, max_y);
+        }
+        current_y = increaseValue(current_y, rec_size, max_y);
+        current_x = increaseValue(current_x, rec_size, max_x);
+    }
+    return [
+        rec_size, items
+    ];
 };
