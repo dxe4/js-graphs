@@ -34,6 +34,16 @@ var makeLine = function (cx, cy, cx1, cy1) {
     }
 };
 
+connectLines = function (draw, shape_a, shape_b) {
+    // TODO this wont work for all cases, need dx,dy
+    var cx = shape_a.cx();
+    var cy = shape_a.cy();
+
+    var cx1 = shape_b.cx();
+    var cy1 = shape_b.cy();
+
+    return draw.line(cx, cy, cx1, cy1);
+};
 
 initGraph = function () {
     var draw = SVG('drawing').size(800, 800);
@@ -41,11 +51,6 @@ initGraph = function () {
     var rect = draw.rect(100, 100).attr({ fill: '#f06' });
     var rect2 = draw.rect(100, 100).attr({ fill: '#f15' }).move(100, 0);
 
-    var cx = rect.cx();
-    var cy = rect.cy();
-
-    var cx1 = rect2.cx();
-    var cy1 = rect2.cy();
-
-    draw.line(cx, cy, cx1, cy1).stroke({ width: 1 });
+    var line = connectLines(draw, rect, rect2);
+    line.stroke({ width: 1 });
 };
