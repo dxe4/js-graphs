@@ -55,38 +55,46 @@ initGraph = function () {
 
     // var line = connectLines(draw, rect, rect2);
     // line.stroke({ width: 1 });
+    var items_per_axis = Math.sqrt(8);
+    var rec_size = X / items_per_axis;
 
-    var test_data = makeTestData(X, Y, 8);
+    var data = fMakeTestData(X, Y, rec_size);
 
-    var sizes = test_data[0],
-        data = test_data[1];
 
 
     for (i = 0; i < data.length; i++) {
         var point = data[i];
-        console.log(point);
-        var r = draw.rect(sizes, sizes)
+        var r = draw.rect(rec_size, rec_size)
             .attr({ fill: '#f15' })
             .move(point[0], point[1]);
     }
 };
 
+
+function product() {
+    return Array.prototype.reduce.call(arguments, function (a, b) {
+        var ret = [];
+        a.forEach(function (a) {
+            b.forEach(function (b) {
+                ret.push(a.concat([b]));
+            });
+        });
+        return ret;
+    }, [
+        []
+    ]);
+}
+
+var fMakeTestData = function (max_x, max_y, rec_size) {
+    /**
+     * "Functional" version of makeTestData
+     */
+    return product(_.range(0, max_x, rec_size), _.range(0, max_y, rec_size));
+};
+
 var increaseValue = function (current, increase, max) {
     return (current > max) ? 0 : current + increase;
 };
-
-function product() {
-  return Array.prototype.reduce.call(arguments, function(a, b) {
-    var ret = [];
-    a.forEach(function(a) {
-      b.forEach(function(b) {
-        ret.push(a.concat([b]));
-      });
-    });
-    return ret;
-  }, [[]]);
-}
-
 
 var makeTestData = function (max_x, max_y, num_items) {
     var items_per_axis = Math.sqrt(num_items);
