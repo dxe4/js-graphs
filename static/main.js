@@ -1,4 +1,6 @@
-connectLines = function (draw, shape_a, shape_b) {
+'use strict';
+
+var connectLines = function (draw, shape_a, shape_b) {
     var cx = shape_a.cx();
     var cy = shape_a.cy();
 
@@ -30,22 +32,13 @@ function cartesianProduct() {
     ]);
 }
 
-initGraph = function () {
-    var X = 900,
-        Y = 900;
-    var draw = SVG('drawing').size(X, Y);
-
-    var items_per_axis = 4;
-    var rec_size = X / items_per_axis;
-
-    var data = fMakeTestData(X, Y, rec_size);
-
+function drawTestData(draw, data, rec_size) {
     // Pair items in two, in order to draw lines
     var toConnect = _.groupBy(data, function (element, index) {
         return Math.floor(index / 2);
     });
 
-    var connected = _.map(toConnect, function (n) {
+    return _.map(toConnect, function (n) {
         var point_a = n[0],
             point_b = n[1];
 
@@ -54,17 +47,37 @@ initGraph = function () {
             .move(point_a[0], point_a[1]);
 
         var rect_b = draw.rect(rec_size, rec_size)
-            .attr({ fill: '#f06' })
+            .attr({ fill: '#f55' })
             .move(point_b[0], point_b[1]);
 
         var line = connectLines(draw, rect_a, rect_b);
         line.stroke({ width: 1 });
         return [rect_a, rect_b];
     });
+}
 
+var initGraph = function () {
+    var X = 900,
+        Y = 900;
+    var draw = SVG('drawing').size(X, Y);
 
-    _.map(connected, function(n){
+    var items_per_axis = 4;
+    var rec_size = X / items_per_axis - 10;
+    var max_x = X - Math.round(X / 10);
+    var max_y = Y - Math.round(X / 10);
+
+    var data = fMakeTestData(max_x, max_y, rec_size);
+    var connected = drawTestData(draw, data, rec_size);
+
+    _.map(connected, function (n) {
         // connected pairs
+        var a = n[0];
+        var b = n[1];
+
+        a.x(a.x() + 20);
+
+        b.y(b.y() + 20);
+
     });
 };
 
@@ -122,8 +135,8 @@ var makeTestData = function (max_x, max_y, num_items) {
     var current_x = 0,
         current_y = 0;
 
-    for (i = 0; i < items_per_axis; i++) {
-        for (j = 0; j < items_per_axis; j++) {
+    for (var i = 0; i < items_per_axis; i++) {
+        for (var j = 0; j < items_per_axis; j++) {
             items.push([current_x, current_y]);
             current_y = increaseValue(current_y, rec_size, max_y);
         }
