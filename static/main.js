@@ -75,6 +75,19 @@ var increaseValue = function (current, increase, max) {
     return (current > max) ? 0 : current + increase;
 };
 
+function product() {
+  return Array.prototype.reduce.call(arguments, function(a, b) {
+    var ret = [];
+    a.forEach(function(a) {
+      b.forEach(function(b) {
+        ret.push(a.concat([b]));
+      });
+    });
+    return ret;
+  }, [[]]);
+}
+
+
 var makeTestData = function (max_x, max_y, num_items) {
     var items_per_axis = Math.sqrt(num_items);
     var rec_size = max_x / items_per_axis;
