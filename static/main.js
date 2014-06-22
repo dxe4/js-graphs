@@ -53,9 +53,9 @@ initGraph = function () {
             .attr({ fill: '#f06' })
             .move(point_a[0], point_a[1]);
 
-        var rect_b = draw.rect(rec_size, rec_size);
-            rect_b.attr({ fill: '#f06' })
-            rect_b.move(point_b[0], point_b[1]);
+        var rect_b = draw.rect(rec_size, rec_size)
+            .attr({ fill: '#f06' })
+            .move(point_b[0], point_b[1]);
 
         var line = connectLines(draw, rect_a, rect_b);
         line.stroke({ width: 1 });
