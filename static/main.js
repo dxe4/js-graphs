@@ -23,14 +23,21 @@ initGraph = function () {
     var rec_size = X / items_per_axis;
 
     var data = fMakeTestData(X, Y, rec_size);
-    var toConnect = _.groupBy(data, function(element, index){
-      return Math.floor(index/2);
+    var toConnect = _.groupBy(data, function (element, index) {
+        return Math.floor(index / 2);
     });
+    console.log(toConnect);
+    _.map(toConnect, function (n) {
 
-    _.map(toConnect, function(n){
         var point_a = n[0],
             point_b = n[1];
+
         var rect_a = draw.rect(rec_size, rec_size).attr({ fill: '#f06' }).move(point_a[0], point_a[1]);
+
+        if (n[1] === undefined) {
+            return;
+        }
+
         var rect_b = draw.rect(rec_size, rec_size).attr({ fill: '#f06' }).move(point_b[0], point_b[1]);
         var line = connectLines(draw, rect_a, rect_b);
         line.stroke({ width: 1 });
