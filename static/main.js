@@ -8,46 +8,15 @@ connectLines = function (draw, shape_a, shape_b) {
     return draw.line(cx, cy, cx1, cy1);
 };
 
-
-initGraph = function () {
-    var X = 900,
-        Y = 900;
-    var draw = SVG('drawing').size(X, Y);
-
-    var items_per_axis = 4;
-    var rec_size = X / items_per_axis;
-
-    var data = fMakeTestData(X, Y, rec_size);
-    var toConnect = _.groupBy(data, function (element, index) {
-        return Math.floor(index / 2);
-    });
-    
-    _.map(toConnect, function (n) {
-
-        var point_a = n[0],
-            point_b = n[1];
-
-        var rect_a = draw.rect(rec_size, rec_size)
-            .attr({ fill: '#f06' })
-            .move(point_a[0], point_a[1]);
-
-        var rect_b = draw.rect(rec_size, rec_size)
-            .attr({ fill: '#f06' })
-            .move(point_b[0], point_b[1]);
-        var line = connectLines(draw, rect_a, rect_b);
-        line.stroke({ width: 1 });
-    });
-
-//    for (i = 0; i < data.length; i++) {
-//        var point = data[i];
-//        var r = draw.rect(rec_size, rec_size)
-//            .attr({ fill: '#f15' })
-//            .move(point[0], point[1]);
-//    }
+var fMakeTestData = function (max_x, max_y, rec_size) {
+    /**
+     * "Functional" version of makeTestData.
+     * Returns an IxJ array of
+     */
+    return cartesianProduct(_.range(0, max_x, rec_size), _.range(0, max_y, rec_size));
 };
 
-
-function product() {
+function cartesianProduct() {
     return Array.prototype.reduce.call(arguments, function (a, b) {
         var ret = [];
         a.forEach(function (a) {
@@ -61,11 +30,36 @@ function product() {
     ]);
 }
 
-var fMakeTestData = function (max_x, max_y, rec_size) {
-    /**
-     * "Functional" version of makeTestData
-     */
-    return product(_.range(0, max_x, rec_size), _.range(0, max_y, rec_size));
+initGraph = function () {
+    var X = 900,
+        Y = 900;
+    var draw = SVG('drawing').size(X, Y);
+
+    var items_per_axis = 4;
+    var rec_size = X / items_per_axis;
+
+    var data = fMakeTestData(X, Y, rec_size);
+
+    // Pair items in two, in order to draw lines
+    var toConnect = _.groupBy(data, function (element, index) {
+        return Math.floor(index / 2);
+    });
+
+    _.map(toConnect, function (n) {
+        var point_a = n[0],
+            point_b = n[1];
+
+        var rect_a = draw.rect(rec_size, rec_size)
+            .attr({ fill: '#f06' })
+            .move(point_a[0], point_a[1]);
+
+        var rect_b = draw.rect(rec_size, rec_size)
+            .attr({ fill: '#f06' })
+            .move(point_b[0], point_b[1]);
+
+        var line = connectLines(draw, rect_a, rect_b);
+        line.stroke({ width: 1 });
+    });
 };
 
 ////////////////////////////////////////////////////
