@@ -17,7 +17,7 @@
     {
       "type": "MIT",
       "url": "https://github.com/danheberden/gith/blob/master/LICENSE-MIT"
-    }
+    }`
   ],
   "devDependencies": {
     "coffee-script": "^1.7.1",
