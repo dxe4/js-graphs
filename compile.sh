@@ -1,0 +1,1 @@
+coffee -j dist/app.js -c src/*.coffee
