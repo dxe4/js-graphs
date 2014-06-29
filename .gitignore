@@ -1,6 +1,3 @@
 node_modules/
-temp/
-.idea/
-.editorconfig
-.jshintrc
-bower_components
+bower_components/
+.grunt/
