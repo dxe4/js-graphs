@@ -18,7 +18,6 @@ inorder_traversal = (f, z, tree) ->
     z2 = f(v, z1)
     z3 = go(r, z2)
 
-
 flatten = (traversal, tree) ->
   append = (i, a) -> a.concat(i)
   traversal append, [], tree
