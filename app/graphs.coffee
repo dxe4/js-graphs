@@ -8,18 +8,17 @@ zip = () ->
   for i in [0...length]
     arr[i] for arr in arguments
 
-
 to_dict = (keys, values) ->
-# Pass keys and values to create a dict
-# Example: to_dict(["name", "price"], [["spam", "1.50"], ["eggs", "1.49"])
-# Returns: [{"name":"spam", "price":"1.50"}, {"name": "eggs", "price": "1.49"}]
-	values.map (value) ->
-	 	val = {}
-	 	zip(value, keys).map (k) ->
-	 		k.reduce (a, b) ->
-	 			val[b] = a
-	 			val
-	 	val
+  _dict = {}
+  _dict[key] = value for [key, value] in zip(keys, values)
+  _dict
+
+to_dict_pairs = (pairs) ->
+  _dict = {}
+  _dict[key] = value for [key, value] in pairs
+  _dict
+
+console.log to_dict(["foo", "bar"], ["spam", "eggs"])
 
 graphs = {}
 graphs.Graph = class Graph
@@ -34,9 +33,7 @@ graphs.Edge = class Node
 data = zip(
 	(num for num in [1..10]),
 	("foo_#{num}" for num in [1..10]) )
-
-node_data = to_dict(["id", "name"], data)
+ 
+node_data = data.map (node) -> to_dict_pairs(zip(["id", "name"], node))
 
 nodes = node_data.map (dict) -> new graphs.Node dict
-
-graph = new graphs.Graph([node])
