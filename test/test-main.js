@@ -1,31 +1,32 @@
-/* global window, requirejs */
-
-var tests = [];
-for (var file in window.__karma__.files) {
-  if (window.__karma__.files.hasOwnProperty(file)) {
-    if (/Spec\.js$/.test(file)) {
-      tests.push(file);
-    }
+var allTestFiles = [];
+var TEST_REGEXP = /(spec|test)\.js$/i;
+ 
+var pathToModule = function(path) {
+  var returnValue = path.replace(/^\/base\//, '').replace(/\.js$/, '');
+  return returnValue;
+};
+ 
+Object.keys(window.__karma__.files).forEach(function(file) {
+  if (TEST_REGEXP.test(file)) {
+    // Normalize paths to RequireJS module names.
+    allTestFiles.push(pathToModule(file));
   }
-}
-
-requirejs.config({
-    // Karma serves files from '/base'
-    baseUrl: '/base/src',
-
-    paths: {
-        'svgjs': '../static/svg.min.js',
-    },
-
-    // shim: {
-    //     'underscore': {
-    //         exports: '_'
-    //     }
-    // },
-
-    // ask Require.js to load these files (all our tests)
-    deps: tests,
-
-    // start test run, once Require.js is done
-    callback: window.__karma__.start
+});
+ 
+require.config({
+  // Karma serves files under /base, which is the basePath from your config file
+  // note we are using base/src to ensure that modules are defined relative to the same path
+  // for both main.js and test-main.js requireJS bootstraps
+  baseUrl: '/base/src',
+  
+  paths: {
+    'svgjs': '../static/svg-dev',
+    'test' : '../test'
+  },
+ 
+  // dynamically load all test files
+  deps: allTestFiles,
+ 
+  // we have to kickoff jasmine, as it is asynchronous
+  callback: window.__karma__.start
 });
