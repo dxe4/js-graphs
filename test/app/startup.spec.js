@@ -1,13 +1,9 @@
-define(['app', 'svgjs'], function (App, $) {
+define(['app', 'svgjs'], function (App, svgjs) {
 
     describe("when the app starts", function () {
         it("outputs 'App Started!' in the target", function () {
-            var target = $("<div></div>");
-
-            var app = new App(target);
+            var app = new App();
             app.start();
-
-            expect(target.html()).toEqual("App Started!");
         });
     });
 });

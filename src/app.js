@@ -1,12 +1,10 @@
-define(["svgjs"], function ($) {
+define(["svgjs"], function () {
     "use strict";
 
-    var App = function (target) {
-        this.target = target || $("body");
+    var App = function () {
     };
 
     App.prototype.start = function () {
-        this.target.html("App Started!");
     };
 
     return App;
