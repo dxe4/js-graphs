@@ -4,7 +4,8 @@
     "requirejs": "~2.1.5",
     "lodash": ">= 2.2.1",
     "svg.js": "~1.0.0-rc.9",
-    "require-cs": "~0.4.4"
+    "require-cs": "~0.4.4",
+    "coffee-script": "~1.7.1"
   },
   "devDependencies": {
     "svg.js": "~1.0.0-rc.9",
